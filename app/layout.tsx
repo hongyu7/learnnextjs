@@ -1,3 +1,6 @@
+import '@/app/ui/global.css'; //加入全局样式设置。
+import { inter } from '@/app/ui/fonts'; //引入字体
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
 }
