@@ -21,6 +21,7 @@ const links = [
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
 ];
 
+// <Link>会预先被准备好，点击的时候快速反馈。
 export default function NavLinks() {
   const pathname = usePathname();
   return (

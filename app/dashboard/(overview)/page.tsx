@@ -11,7 +11,7 @@ import {
   CardsSkeleton,
 } from '@/app/ui/skeletons';
 
-// 注意是异步方法
+// 这个页面是一个异步组件，可以使用await来获取数据。
 export default async function Page() {
   // const revenue = await fetchRevenue();
   // const latestInvoices = await fetchLatestInvoices();
@@ -42,7 +42,7 @@ export default async function Page() {
         </Suspense>
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        {/* suspense组件是react新的组件 */}
+        {/* 当数据没有获取的时候，先显示数据的显示框架。*/}
         <Suspense fallback={<RevenueChartSkeleton />}>
           <RevenueChart />
         </Suspense>

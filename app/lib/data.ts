@@ -11,12 +11,15 @@ import {
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
 
-// 使用NEXT.JS的服务器组件来访问数据库。保证数据安全。
+/**
+ * 访问数据库的服务器组件
+ * @returns 
+ */
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
-  noStore();
+  noStore(); // 在服务器组件可以保证数据动态更新。
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
@@ -36,7 +39,7 @@ export async function fetchRevenue() {
 }
 
 export async function fetchLatestInvoices() {
-  noStore(); // 避免被CATCHED
+  noStore();
   try {
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
