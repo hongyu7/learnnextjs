@@ -11,6 +11,8 @@ import {
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
 
+// 使用NEXT.JS的服务器组件来访问数据库。保证数据安全。
+
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
@@ -20,11 +22,11 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    console.log('Data fetch completed after 3 seconds.');
+    console.log('Data fetch completed after 1 seconds.');
 
     return data.rows;
   } catch (error) {
@@ -34,7 +36,7 @@ export async function fetchRevenue() {
 }
 
 export async function fetchLatestInvoices() {
-  noStore();
+  noStore(); // 避免被CATCHED
   try {
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
@@ -67,7 +69,7 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
 
-    //并发数据获取
+    //并发数据获取。Promise.all确保三个Promise都执行完毕才resolve。
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
@@ -128,7 +130,7 @@ export async function fetchFilteredInvoices(
   }
 }
 
-// returns the total number of pages based on the search query. 
+// returns the total number of pages based on the search query.
 export async function fetchInvoicesPages(query: string) {
   noStore();
   try {
